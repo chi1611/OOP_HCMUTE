@@ -34,5 +34,21 @@ public class App {
         System.out.println("Dien Tich: " + r2.dienTich());
         System.out.println("Chu Vi: " + r2.chuVi());
         System.out.println("La Hinh Vuong: " + r2.laHinhVuong());
+        System.out.println();
+
+        //bai 3
+        Circle[] circles = {
+            new Circle(2),
+            new Circle(3),
+            new Circle(8),
+            new Circle(4),
+            new Circle(6)
+        };
+        double totalArea = 0;
+        for (Circle c : circles) {
+            totalArea += c.area();
+        }
+
+        System.out.println("Tong dien tich cua 5 hinht tron la: " + totalArea);
     }
 }

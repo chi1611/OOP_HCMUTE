@@ -18,5 +18,21 @@ public class App {
         b1.printInfo();
         b2.printInfo();
         b3.printInfo();
+
+        //BAI2
+        Rectangle r1 = new Rectangle(5, 10);
+        Rectangle r2 = new Rectangle(7, 7);
+
+        System.out.println("Rectangle 1:");
+        System.out.println("Dien Tich: " + r1.dienTich());
+        System.out.println("Chu Vi: " + r1.chuVi());
+        System.out.println("La Hinh Vuong: " + r1.laHinhVuong());
+
+        System.out.println();
+
+        System.out.println("Rectangle 2:");
+        System.out.println("Dien Tich: " + r2.dienTich());
+        System.out.println("Chu Vi: " + r2.chuVi());
+        System.out.println("La Hinh Vuong: " + r2.laHinhVuong());
     }
 }

@@ -14,7 +14,7 @@ public class Book {
         System.out.println("Tac gia: " + author);
         System.out.println("Gia: " + price);
         System.out.println("Con hang: " + inStock);
-        System.out.println("----------------------");
+        System.out.println(" -----------------");
     }
     public void Discount(double percent) {
         price = price - (price * percent / 100);

@@ -7,13 +7,15 @@ public enum ReaderType {
 
     private int maxBorrow;
 
-    ReaderType(int maxBorrow) {
+    ReaderType(
+            int maxBorrow) {
 
-        this.maxBorrow = maxBorrow;
+        this.maxBorrow =
+                maxBorrow;
     }
-
     public int getMaxBorrow() {
 
         return maxBorrow;
     }
+
 }

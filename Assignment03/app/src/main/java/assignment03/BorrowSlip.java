@@ -1,6 +1,7 @@
 package assignment03;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class BorrowSlip {
     private String slipId;
@@ -8,6 +9,8 @@ public class BorrowSlip {
     private Book book;
     private LocalDate borrowDate;
     private LocalDate dueDate;
+    private boolean returned;
+
     public BorrowSlip(
             String slipId,
             Reader reader,
@@ -20,23 +23,54 @@ public class BorrowSlip {
         this.book = book;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
+
+        returned = false;
     }
+    public double returnBook() {
 
-    public boolean isOverdue() {
+        returned = true;
 
-        return LocalDate.now()
-                .isAfter(dueDate);
+        // cộng kho
+        book.increaseQuantity();
+
+        if(LocalDate.now()
+                .isAfter(dueDate)) {
+
+            long lateDays =
+
+                ChronoUnit.DAYS.between(
+                        dueDate,
+                        LocalDate.now());
+
+            return lateDays * 5000;
+        }
+
+        return 0;
     }
+    public boolean isOverdue(
+            LocalDate currentDate) {
 
-    public LocalDate getDueDate() {
+        return !returned
 
-        return dueDate;
+            &&
+
+            currentDate
+            .isAfter(dueDate);
     }
+    public boolean isReturned() {
 
+        return returned;
+    }
     public Reader getReader() {
+
         return reader;
     }
     public Book getBook() {
+
         return book;
+    }
+    public LocalDate getDueDate() {
+
+        return dueDate;
     }
 }

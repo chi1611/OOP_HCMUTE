@@ -1,7 +1,5 @@
 package assignment03;
 
-import java.time.LocalDate;
-
 public class App {
 
     public String getGreeting() {
@@ -30,102 +28,74 @@ public class App {
                         2023,
                         5);
 
+        Book book3 =
+                new Book(
+                        "B03",
+                        "Spring Boot Guide",
+                        "Nguyen Ba C",
+                        2024,
+                        8);
+
         library.addBook(book1);
         library.addBook(book2);
+        library.addBook(book3);
 
         // Tạo độc giả
-        Reader reader1 =
-                new Reader(
+        Student student1 =
+                new Student(
                         "R01",
                         "Le Linh Chi",
-                        "chi@gmail.com",
-                        ReaderType.STUDENT);
+                        "chi@gmail.com");
 
-        Reader reader2 =
-                new Reader(
+        Student student2 =
+                new Student(
                         "R02",
-                        "Minh Nhi",
-                        "nhi@gmail.com",
-                        ReaderType.LECTURER);
+                        "Hoang Minh Duc",
+                        "duc@gmail.com");
 
-        library.addReader(reader1);
-        library.addReader(reader2);
+        Lecturer lecturer1 =
+                new Lecturer(
+                        "R03",
+                        "Dr. Tran Van Binh",
+                        "binh@university.edu");
 
-        Librarian librarian =
-                new Librarian();
+        Lecturer lecturer2 =
+                new Lecturer(
+                        "R04",
+                        "Prof. Le Thi Huong",
+                        "huong@university.edu");
+
+        library.addReader(student1);
+        library.addReader(student2);
+        library.addReader(lecturer1);
+        library.addReader(lecturer2);
 
         System.out.println(
-                "===== MUON SACH =====");
-
-        BorrowSlip slip1 =
-                librarian.borrowBook(
-                        "P01",
-                        reader1,
-                        book1,
-                        library);
-
-        BorrowSlip slip2 =
-                librarian.borrowBook(
-                        "P02",
-                        reader1,
-                        book1,
-                        library);
-
-        BorrowSlip slip3 =
-                librarian.borrowBook(
-                        "P03",
-                        reader1,
-                        book2,
-                        library);
-
-        // vượt giới hạn sinh viên
-        librarian.borrowBook(
-                "P04",
-                reader1,
-                book2,
-                library);
+                "===== DANH SACH BOOK =====");
+        System.out.println(book1);
+        System.out.println(book2);
+        System.out.println(book3);
 
         System.out.println();
-
         System.out.println(
-                "===== TIM SACH =====");
-
-        library.searchBook(
-                "java");
+                "===== DANH SACH DOC GIA =====");
+        System.out.println(student1);
+        System.out.println(
+                "Max borrow: " + student1.getMaxBorrow());
 
         System.out.println();
-
+        System.out.println(student2);
         System.out.println(
-                "===== PHIEU QUA HAN =====");
-
-        library.showOverdueBooks(
-                LocalDate.now()
-                        .plusDays(10));
+                "Max borrow: " + student2.getMaxBorrow());
 
         System.out.println();
-
+        System.out.println(lecturer1);
         System.out.println(
-                "===== TRA SACH =====");
-        librarian.returnBook(slip1);    
-        
+                "Max borrow: " + lecturer1.getMaxBorrow());
+
         System.out.println();
-
+        System.out.println(lecturer2);
         System.out.println(
-                "===== THONG KE =====");
-
-        System.out.println(
-                "Most borrowed book: "
-                +
-                library
-                .getMostBorrowedBook()
-                .getTitle());
-
-        System.out.println(
-                "Top reader: "
-                +
-                library
-                .getTopReader()
-                .getFullName());
-
-    }
+                "Max borrow: " + lecturer2.getMaxBorrow());
+        }
 }

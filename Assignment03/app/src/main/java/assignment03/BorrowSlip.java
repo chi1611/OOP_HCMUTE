@@ -26,27 +26,27 @@ public class BorrowSlip {
 
         returned = false;
     }
-    public double returnBook() {
+public double returnBook(
+        LocalDate returnDate) {
 
-        returned = true;
+    returned = true;
 
-        // cộng kho
-        book.increaseQuantity();
+    book.increaseQuantity();
 
-        if(LocalDate.now()
-                .isAfter(dueDate)) {
+    if(returnDate.isAfter(
+            dueDate)) {
 
-            long lateDays =
+        long lateDays =
 
-                ChronoUnit.DAYS.between(
-                        dueDate,
-                        LocalDate.now());
+            ChronoUnit.DAYS.between(
+                dueDate,
+                returnDate);
 
-            return lateDays * 5000;
-        }
-
-        return 0;
+        return lateDays * 5000;
     }
+
+    return 0;
+}
     public boolean isOverdue(
             LocalDate currentDate) {
 

@@ -50,15 +50,17 @@ public class Librarian {
         return slip;
     }
 
-    public void returnBook(
-            BorrowSlip slip) {
+  public void returnBook(
+        BorrowSlip slip) {
 
-        double fine =
-                slip.returnBook();
+    double fine =
+        slip.returnBook(
+            LocalDate.now()
+            .plusDays(10));
 
-        System.out.println(
-            "Fine: "
-            + fine
-            + " VND");
+    System.out.println(
+        "Fine: "
+        + fine
+        + " VND");
     }
 }

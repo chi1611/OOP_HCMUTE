@@ -192,4 +192,46 @@ public class Library {
         return result;
     }
 
+    public void printAllReaders() {
+        System.out.println("===== DANH SACH DOC GIA (" + readers.size() + " nguoi) =====");
+
+        for (Reader r : readers) {
+            System.out.println(r.getInfo()); // Dynamic binding: tự gọi đúng lớp con
+        }
+    }
+
+    public double calculateTotalLateFee(int daysLate) {
+        double total = 0;
+
+        for (Reader r : readers) {
+            total += r.calculateLateFee(daysLate); // Dynamic binding
+        }
+
+        return total;
+    }
+
+    public Reader findReaderByName(String keyword) {
+        for (Reader r : readers) {
+            if (r.getFullName().toLowerCase().contains(keyword.toLowerCase())) {
+                return r; // Trả về Reader - có thể là bất kỳ lớp con nào
+            }
+        }
+
+        return null; // Không tìm thấy
+    }
+
+    public void printSeniorReaders() {
+        System.out.println("====== DOC GIA NGUOI CAO TUOI ======");
+        int count = 0;
+        for (Reader r : readers) {
+            if (r instanceof SeniorReader) { // 1. Kiểm tra kiểu thực tế
+                SeniorReader sr = (SeniorReader) r; // 2. Downcast an toàn
+                System.out.println(sr.getInfo());
+                System.out.println("Ma the NCT: " + sr.getSeniorCardNumber()); // method riêng
+                count++;
+            }
+        }
+        if (count == 0) System.out.println("(Chua co doc gia NCT)");
+    }
+
 }

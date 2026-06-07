@@ -28,12 +28,14 @@ public class App {
 
         Reader sv = new Student("R001", "Le Van C", "c@student.edu");
         Reader gv = new Lecturer("R002", "Pham Thi D", "d@uni.edu");
+        Reader nct = new SeniorReader("R003", "Tran Van C", "c@senior.edu", "CC2024001");
 
         Library lib = new Library();
         lib.addBook(b1);
         lib.addBook(b2);
         lib.addReader(sv);
         lib.addReader(gv);
+        lib.addReader(nct);
 
         lib.showAllBooks();
         lib.showAllReaders();
@@ -41,10 +43,31 @@ public class App {
 
         System.out.println();
         System.out.println("Han muon:");
-        Reader[] readers = {sv, gv};
+        Reader[] readers = {sv, gv, nct};
         for (Reader r : readers) {
             System.out.println(r.getFullName() + ": " + r.getMaxBorrow() + " cuon");
         }
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.1: Dynamic binding qua printAllReaders() ---");
+        lib.printAllReaders();
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.2: Dynamic binding qua calculateTotalLateFee() ---");
+        double total = lib.calculateTotalLateFee(5);
+        System.out.printf("Tong phat neu qua han 5 ngay: %.0f VND%n", total);
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.3: Tim kiem va dung dynamic binding tren ket qua ---");
+        Reader found = lib.findReaderByName("tran van");
+        if (found != null) {
+            System.out.println(found.getInfo());
+            System.out.println(found.getMaxBorrow() + " cuon - " + found.getFullName());
+        }
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.4: Downcast an toan ---");
+        lib.printSeniorReaders();
 
         // --- DigitalAccount demo ---
         System.out.println();

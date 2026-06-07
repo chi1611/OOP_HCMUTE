@@ -53,7 +53,10 @@ public abstract class Reader {
 
     public abstract double calculateLateFee(int daysLate);
 
-    public abstract String getInfo();
+    public String getInfo() {
+        return getReaderId() + " | " + getFullName()
+                + " | Email: " + getEmail();
+    }
 
     @Override
     public String toString() {

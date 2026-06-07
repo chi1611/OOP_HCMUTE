@@ -19,6 +19,16 @@ public class GuestReader extends Reader {
     }
 
     @Override
+    protected boolean checkSpecialCondition(Book book) {
+        return true;
+    }
+
+    @Override
+    protected String getSpecialConditionMessage() {
+        return "";
+    }
+
+    @Override
     public String getInfo() {
         return "[KH] " + getReaderId() + " | " + getFullName()
                 + " | Email: " + getEmail()

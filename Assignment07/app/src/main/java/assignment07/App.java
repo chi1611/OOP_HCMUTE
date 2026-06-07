@@ -80,6 +80,25 @@ public class App {
         System.out.println("--- YEU CAU 2.6: Only CardHolder can renew card ---");
         lib.renewAllCardHolders(Arrays.asList(sv, gv, nct), 1);
 
+        System.out.println();
+        System.out.println("--- YEU CAU 1: Template Method demo ---");
+        Book refBook = new Book("B003", "Ky thuat lap trinh", "Le Loi", 2023, 2, true);
+        BorrowResult borrow1 = sv.processBorrow(b1);
+        System.out.println(borrow1.getMessage());
+        BorrowResult borrow2 = sv.processBorrow(refBook);
+        System.out.println(borrow2.getMessage());
+        BorrowResult borrow3 = guest.processBorrow(b2);
+        System.out.println(borrow3.getMessage());
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2: Strategy Pattern demo ---");
+        lib.setFeePolicy(new StandardFeePolicy());
+        lib.calculateTotalFee(7);
+        lib.setFeePolicy(new CharityFeePolicy());
+        lib.calculateTotalFee(7);
+        lib.setFeePolicy(new WaivedFeePolicy());
+        lib.calculateTotalFee(7);
+
         // --- DigitalAccount demo ---
         System.out.println();
         System.out.println("--- DigitalAccount demo ---");

@@ -19,6 +19,16 @@ public class Lecturer extends CardHolder {
     }
 
     @Override
+    protected boolean checkSpecialCondition(Book book) {
+        return true;
+    }
+
+    @Override
+    protected String getSpecialConditionMessage() {
+        return "";
+    }
+
+    @Override
     public String getInfo() {
         return "[GV] " + getReaderId() + " | " + getFullName()
                 + " | Email: " + getEmail()

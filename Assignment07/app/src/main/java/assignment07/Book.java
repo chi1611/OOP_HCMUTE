@@ -7,6 +7,7 @@ public class Book {
     private String author;
     private int publishYear;
     private int quantity;
+    private boolean referenceOnly;
 
     // Constructor
     public Book(String bookId,
@@ -15,11 +16,22 @@ public class Book {
                 int publishYear,
                 int quantity) {
 
+        this(bookId, title, author, publishYear, quantity, false);
+    }
+
+    public Book(String bookId,
+                String title,
+                String author,
+                int publishYear,
+                int quantity,
+                boolean referenceOnly) {
+
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
         this.quantity = quantity;
+        this.referenceOnly = referenceOnly;
     }
 
     // Getter & Setter
@@ -62,6 +74,14 @@ public class Book {
         this.quantity = quantity;
     }
 
+    public boolean isReferenceOnly() {
+        return referenceOnly;
+    }
+
+    public void setReferenceOnly(boolean referenceOnly) {
+        this.referenceOnly = referenceOnly;
+    }
+
     // Business methods
     public boolean isAvailable() {
         return quantity > 0;
@@ -77,11 +97,12 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "" + bookId + '\'' +
-                "" + title + '\'' +
-                "" + author + '\'' +
-                "" + publishYear +
-                "" + quantity +
+                "bookId='" + bookId + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publishYear=" + publishYear +
+                ", quantity=" + quantity +
+                ", ref=" + referenceOnly +
                 '}';
     }
 }

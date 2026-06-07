@@ -31,6 +31,22 @@ public class SeniorReader extends CardHolder {
     }
 
     @Override
+    protected boolean checkSpecialCondition(Book book) {
+        return true;
+    }
+
+    @Override
+    protected String getSpecialConditionMessage() {
+        return "";
+    }
+
+    @Override
+    protected void onBorrowSuccess(Book book) {
+        super.onBorrowSuccess(book);
+        System.out.println(" -> Da ghi nhan: Nguoi cao tuoi — khong thu phi phat");
+    }
+
+    @Override
     public String getInfo() {
     //    Khi sử dụng super.getInfo(), 
     //    chương trình sẽ thực hiện đúng phương thức getInfo() của lớp Reader 

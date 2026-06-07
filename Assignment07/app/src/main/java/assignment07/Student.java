@@ -19,6 +19,16 @@ public class Student extends CardHolder {
     }
 
     @Override
+    protected boolean checkSpecialCondition(Book book) {
+        return !book.isReferenceOnly();
+    }
+
+    @Override
+    protected String getSpecialConditionMessage() {
+        return "Sach tham khao chi doc tai cho — sinh vien khong duoc mang ve";
+    }
+
+    @Override
     public String getInfo() {
         return "[SV] " + getReaderId() + " | " + getFullName()
                 + " | Email: " + getEmail()

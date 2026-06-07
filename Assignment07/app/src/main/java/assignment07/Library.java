@@ -3,28 +3,47 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// DESIGN ANALYSIS
+// [Library] HAS-A [ArrayList<Book>]: Library keeps a catalog of books as part of its internal state.
+//   Composition is used because books are owned/managed by the library and do not inherit library behavior.
+// [Library] HAS-A [ArrayList<Reader>]: Library manages a collection of readers instead of becoming a reader.
+//   This supports membership management without introducing an IS-A relationship.
+// [Library] HAS-A [ArrayList<BorrowSlip>]: BorrowSlip records borrowing events owned by the library.
+//   Composition is appropriate because borrow slips are part of the library's workflow and life cycle.
+// [Library] HAS-A [LateFeePolicy]: The library delegates fee calculation policy to a strategy object.
+//   This allows runtime swapping of policies without changing Reader or Library logic.
+// [BorrowSlip] HAS-A [Reader]: Each borrow slip references a reader, modeling ownership of the transaction.
+// [BorrowSlip] HAS-A [Book]: Each borrow slip references a book, modeling the borrowed item.
+// [CardHolder] IS-A [Reader]: CardHolder extends Reader because a card holder is a specialized reader.
+// [Student] IS-A [CardHolder]: Student is a specific kind of card holder with its own rules.
+// [Lecturer] IS-A [CardHolder]: Lecturer is a specific card holder with a different borrow limit.
+// [SeniorReader] IS-A [CardHolder]: SeniorReader extends CardHolder because seniors share card holder behavior.
+// [GuestReader] IS-A [Reader]: GuestReader extends Reader directly because guests do not have a library card.
+// Improvement opportunity: keep borrow count tracking in Library/BorrowSlip instead of Reader state.
+//   This avoids duplicating borrowing state across Reader and library transaction records and ensures
+//   the borrowing quota is consistent with actual borrow slips.
+
 public class Library {
 
     private ArrayList<Book> books;
     private ArrayList<Reader> readers;
     private ArrayList<BorrowSlip> slips;
+    private LateFeePolicy feePolicy;
 
     public Library() {
-
         books = new ArrayList<>();
         readers = new ArrayList<>();
         slips = new ArrayList<>();
+        feePolicy = new StandardFeePolicy();
     }
 
     public void addBook(
             Book book) {
-
         books.add(book);
     }
 
     public void addReader(
             Reader reader) {
-
         readers.add(reader);
     }
 
@@ -52,55 +71,29 @@ public class Library {
 
     public void addBorrowSlip(
             BorrowSlip slip) {
-
         slips.add(slip);
     }
 
     // Đếm sách đang mượn
     public int countBorrowingBooks(
             Reader reader) {
-
         int count = 0;
-
-        for(BorrowSlip slip
-                : slips) {
-
-            if(slip.getReader()
-                    .equals(reader)
-
-            &&
-
-            !slip.isReturned()) {
-
+        for(BorrowSlip slip : slips) {
+            if(slip.getReader().equals(reader) && !slip.isReturned()) {
                 count++;
             }
         }
-
         return count;
     }
 
     // Tìm gần đúng
     public void searchBook(
             String keyword) {
-
-        keyword =
-            keyword.toLowerCase();
-
-        for(Book book
-                : books) {
-
-            if(book.getTitle()
-                    .toLowerCase()
-                    .contains(keyword)
-
-            ||
-
-            book.getAuthor()
-                    .toLowerCase()
-                    .contains(keyword)) {
-
-                System.out.println(
-                        book.getTitle());
+        keyword = keyword.toLowerCase();
+        for(Book book : books) {
+            if(book.getTitle().toLowerCase().contains(keyword)
+                    || book.getAuthor().toLowerCase().contains(keyword)) {
+                System.out.println(book.getTitle());
             }
         }
     }
@@ -108,22 +101,12 @@ public class Library {
     // Phiếu quá hạn
     public void showOverdueBooks(
             LocalDate currentDate) {
-
-        for(BorrowSlip slip
-                : slips) {
-
-            if(slip.isOverdue(
-                    currentDate)) {
-
+        for(BorrowSlip slip : slips) {
+            if(slip.isOverdue(currentDate)) {
                 System.out.println(
-
-                    slip.getReader()
-                    .getFullName()
-
+                    slip.getReader().getFullName()
                     + " - "
-
-                    + slip.getBook()
-                    .getTitle()
+                    + slip.getBook().getTitle()
                 );
             }
         }
@@ -131,71 +114,44 @@ public class Library {
 
     // Sách mượn nhiều nhất
     public Book getMostBorrowedBook() {
-
         Book result = null;
-
         int max = 0;
-
-        for(Book book
-                : books) {
-
+        for(Book book : books) {
             int count = 0;
-
-            for(BorrowSlip slip
-                    : slips) {
-
-                if(slip.getBook()
-                        .equals(book)) {
-
+            for(BorrowSlip slip : slips) {
+                if(slip.getBook().equals(book)) {
                     count++;
                 }
             }
-
             if(count > max) {
-
                 max = count;
                 result = book;
             }
         }
-
         return result;
     }
 
     // Độc giả mượn nhiều nhất
     public Reader getTopReader() {
-
         Reader result = null;
-
         int max = 0;
-
-        for(Reader reader
-                : readers) {
-
+        for(Reader reader : readers) {
             int count = 0;
-
-            for(BorrowSlip slip
-                    : slips) {
-
-                if(slip.getReader()
-                        .equals(reader)) {
-
+            for(BorrowSlip slip : slips) {
+                if(slip.getReader().equals(reader)) {
                     count++;
                 }
             }
-
             if(count > max) {
-
                 max = count;
                 result = reader;
             }
         }
-
         return result;
     }
 
     public void printAllReaders() {
         System.out.println("===== DANH SACH DOC GIA (" + readers.size() + " nguoi) =====");
-
         for (Reader r : readers) {
             System.out.println(r.getInfo()); // Dynamic binding: tự gọi đúng lớp con
         }
@@ -203,12 +159,29 @@ public class Library {
 
     public double calculateTotalLateFee(int daysLate) {
         double total = 0;
-
         for (Reader r : readers) {
             total += r.calculateLateFee(daysLate); // Dynamic binding
         }
-
         return total;
+    }
+
+    public double calculateTotalFee(int daysLate) {
+        double total = 0;
+        for (Reader r : readers) {
+            double baseFee = r.calculateLateFee(daysLate); // Dynamic binding
+            double adjustedFee = feePolicy.applyPolicy(baseFee);
+            System.out.printf("  %-20s | Base: %6.0f | Sau CS: %6.0f VND%n",
+                    r.getFullName(), baseFee, adjustedFee);
+            total += adjustedFee;
+        }
+        System.out.printf("Tong phi phat (%s): %.0f VND%n",
+                feePolicy.getPolicyName(), total);
+        return total;
+    }
+
+    public void setFeePolicy(LateFeePolicy policy) {
+        this.feePolicy = policy;
+        System.out.println("Cap nhat chinh sach phi phat: " + policy.getPolicyName());
     }
 
     public void renewAllCardHolders(List<CardHolder> holders, int months) {
@@ -232,7 +205,6 @@ public class Library {
                 return r; // Trả về Reader - có thể là bất kỳ lớp con nào
             }
         }
-
         return null; // Không tìm thấy
     }
 

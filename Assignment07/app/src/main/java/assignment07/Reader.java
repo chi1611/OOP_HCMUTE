@@ -5,6 +5,7 @@ public abstract class Reader {
     private String fullName;
     private String email;
     private ReaderType type;
+    protected int currentBorrowCount;
 
     public Reader(String readerId,
                   String fullName,
@@ -14,6 +15,7 @@ public abstract class Reader {
         this.fullName = fullName;
         this.email = email;
         this.type = type;
+        this.currentBorrowCount = 0;
     }
 
     // Getters
@@ -49,6 +51,14 @@ public abstract class Reader {
         this.type = type;
     }
 
+    public int getCurrentBorrowCount() {
+        return currentBorrowCount;
+    }
+
+    public int getMaxBorrowLimit() {
+        return getMaxBorrow();
+    }
+
     // NOTE: Nếu `renewCard()` được khai báo trong lớp `Reader`, mọi lớp con của Reader đều
     // phải hỗ trợ hành vi này. GuestReader không có thẻ thư viện nên không thể thực hiện
     // renewCard() một cách hợp lệ. Đây là vi phạm LSP: một subtype không thể thay thế
@@ -57,6 +67,39 @@ public abstract class Reader {
     public abstract int getMaxBorrow();
 
     public abstract double calculateLateFee(int daysLate);
+
+    public final BorrowResult processBorrow(Book book) {
+        if (!checkBorrowQuota()) {
+            return new BorrowResult(false,
+                    "Da dat gioi han muon: " + getMaxBorrowLimit() + " cuon");
+        }
+
+        if (!checkSpecialCondition(book)) {
+            return new BorrowResult(false, getSpecialConditionMessage());
+        }
+
+        if (!book.isAvailable()) {
+            return new BorrowResult(false, "Sach hien tai het hang: " + book.getTitle());
+        }
+
+        book.decreaseQuantity();
+        currentBorrowCount++;
+        onBorrowSuccess(book);
+
+        return new BorrowResult(true, "Muon thanh cong: " + book.getTitle());
+    }
+
+    private boolean checkBorrowQuota() {
+        return currentBorrowCount < getMaxBorrowLimit();
+    }
+
+    protected abstract boolean checkSpecialCondition(Book book);
+
+    protected abstract String getSpecialConditionMessage();
+
+    protected void onBorrowSuccess(Book book) {
+        System.out.println(getFullName() + " muon: " + book.getTitle());
+    }
 
     public String getInfo() {
         return getReaderId() + " | " + getFullName()

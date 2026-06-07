@@ -1,6 +1,6 @@
 package assignment06;
 
-public class Lecturer extends Reader {
+public class Lecturer extends CardHolder {
     
     public Lecturer(String readerId,
                     String fullName,

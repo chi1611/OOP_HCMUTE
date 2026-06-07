@@ -49,6 +49,11 @@ public abstract class Reader {
         this.type = type;
     }
 
+    // NOTE: Nếu `renewCard()` được khai báo trong lớp `Reader`, mọi lớp con của Reader đều
+    // phải hỗ trợ hành vi này. GuestReader không có thẻ thư viện nên không thể thực hiện
+    // renewCard() một cách hợp lệ. Đây là vi phạm LSP: một subtype không thể thay thế
+    // superclass mà không làm hỏng các đoạn code phụ thuộc vào hợp đồng của superclass.
+
     public abstract int getMaxBorrow();
 
     public abstract double calculateLateFee(int daysLate);

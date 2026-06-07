@@ -1,6 +1,6 @@
 package assignment06;
 
-public class SeniorReader extends Reader {
+public class SeniorReader extends CardHolder {
 
     private String seniorCardNumber;
 

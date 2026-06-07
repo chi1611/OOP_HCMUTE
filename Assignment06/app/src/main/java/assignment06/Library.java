@@ -1,6 +1,7 @@
 package assignment06;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Library {
 
@@ -208,6 +209,21 @@ public class Library {
         }
 
         return total;
+    }
+
+    public void renewAllCardHolders(List<CardHolder> holders, int months) {
+        System.out.println("===== GIA HAN THE CAC DOC GIA CO THE =====");
+        for (CardHolder holder : holders) {
+            holder.renewCard(months);
+        }
+    }
+
+    public void printFeeReport(List<Reader> readers, int daysLate) {
+        System.out.println("===== FEE REPORT (" + daysLate + " ngay tre) =====");
+        for (Reader r : readers) {
+            System.out.printf("%-40s : %,.0f VND%n",
+                    r.getFullName(), r.calculateLateFee(daysLate));
+        }
     }
 
     public Reader findReaderByName(String keyword) {

@@ -1,5 +1,7 @@
 package assignment06;
 
+import java.util.Arrays;
+
 /*
  * DESIGN RATIONALE
  *
@@ -26,9 +28,10 @@ public class App {
         Book b1 = new Book("B001", "Lap trinh Java", "Nguyen Manh", 2022, 10);
         Book b2 = new Book("B002", "CTDL va GT", "Tran Hung", 2021, 5);
 
-        Reader sv = new Student("R001", "Le Van C", "c@student.edu");
-        Reader gv = new Lecturer("R002", "Pham Thi D", "d@uni.edu");
-        Reader nct = new SeniorReader("R003", "Tran Van C", "c@senior.edu", "CC2024001");
+        CardHolder sv = new Student("R001", "Le Van C", "c@student.edu");
+        CardHolder gv = new Lecturer("R002", "Pham Thi D", "d@uni.edu");
+        CardHolder nct = new SeniorReader("R003", "Tran Van C", "c@senior.edu", "CC2024001");
+        Reader guest = new GuestReader("R004", "Nguyen Van K", "k@guest.edu");
 
         Library lib = new Library();
         lib.addBook(b1);
@@ -68,6 +71,14 @@ public class App {
         System.out.println();
         System.out.println("--- YEU CAU 2.4: Downcast an toan ---");
         lib.printSeniorReaders();
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.5: Dynamic polymorphism qua printFeeReport() ---");
+        lib.printFeeReport(Arrays.asList(sv, gv, nct, guest), 4);
+
+        System.out.println();
+        System.out.println("--- YEU CAU 2.6: Only CardHolder can renew card ---");
+        lib.renewAllCardHolders(Arrays.asList(sv, gv, nct), 1);
 
         // --- DigitalAccount demo ---
         System.out.println();

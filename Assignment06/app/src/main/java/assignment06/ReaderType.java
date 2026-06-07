@@ -2,6 +2,7 @@ package assignment06;
 
 public enum ReaderType {
 
+    GUEST(0),
     STUDENT(3),
     LECTURER(5),
     SENIOR(Integer.MAX_VALUE);

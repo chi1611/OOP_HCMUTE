@@ -99,6 +99,22 @@ public class App {
         lib.setFeePolicy(new WaivedFeePolicy());
         lib.calculateTotalFee(7);
 
+        System.out.println();
+        System.out.println("--- YEU CAU NANG CAO: Librarian composition demo ---");
+        Librarian libr = new Librarian("TT01", "Le Thi D", "0904", "Sang", lib);
+        Reader sv2 = new Student("SV01", "Nguyen Van A", "a@student.edu");
+        Reader nctu = new SeniorReader("CC01", "Le Van C", "c@senior.edu", "CC2024");
+        Book book3 = new Book("B01", "Clean Code", "Robert Martin", 2024, 3, false);
+        lib.addReader(sv2);
+        lib.addReader(nctu);
+        lib.addBook(book3);
+
+        libr.processLoan(sv2, book3);
+        libr.processLoan(nctu, book3);
+
+        // Dòng dưới phải lỗi compile nếu thêm, vì Librarian không phải Reader:
+        // lib.addReader(libr);
+
         // --- DigitalAccount demo ---
         System.out.println();
         System.out.println("--- DigitalAccount demo ---");

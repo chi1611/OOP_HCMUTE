@@ -74,6 +74,10 @@ public class Library {
         slips.add(slip);
     }
 
+    public void removeBorrowSlip(BorrowSlip slip) {
+        slips.remove(slip);
+    }
+
     // Đếm sách đang mượn
     public int countBorrowingBooks(
             Reader reader) {

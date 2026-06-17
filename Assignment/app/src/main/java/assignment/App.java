@@ -25,8 +25,8 @@ public class App {
 
     public static void main(String[] args) {
 
-        Book b1 = new Book("B001", "Lap trinh Java", "Nguyen Manh", 2022, 10);
-        Book b2 = new Book("B002", "CTDL va GT", "Tran Hung", 2021, 5);
+        Book b1 = new Book("B001", "Lap trinh Java", "Nguyen Manh");
+        Book b2 = new Book("B002", "CTDL va GT", "Tran Hung");
 
         CardHolder sv = new Student("R001", "Le Van C", "c@student.edu");
         CardHolder gv = new Lecturer("R002", "Pham Thi D", "d@uni.edu");
@@ -82,7 +82,7 @@ public class App {
 
         System.out.println();
         System.out.println("--- YEU CAU 1: Template Method demo ---");
-        Book refBook = new Book("B003", "Ky thuat lap trinh", "Le Loi", 2023, 2, true);
+        Book refBook = new Book("B003", "Ky thuat lap trinh", "Le Loi");
         BorrowResult borrow1 = sv.processBorrow(b1);
         System.out.println(borrow1.getMessage());
         BorrowResult borrow2 = sv.processBorrow(refBook);
@@ -104,7 +104,7 @@ public class App {
         Librarian libr = new Librarian("TT01", "Le Thi D", "0904", "Sang", lib);
         Reader sv2 = new Student("SV01", "Nguyen Van A", "a@student.edu");
         Reader nctu = new SeniorReader("CC01", "Le Van C", "c@senior.edu", "CC2024");
-        Book book3 = new Book("B01", "Clean Code", "Robert Martin", 2024, 3, false);
+        Book book3 = new Book("B01", "Clean Code", "Robert Martin");
         lib.addReader(sv2);
         lib.addReader(nctu);
         lib.addBook(book3);
@@ -137,5 +137,24 @@ public class App {
         System.out.println("Guest attempts:");
         guestAcc.requestDownload(0); // allow 1/1
         guestAcc.requestDownload(1); // deny (limit reached)
+
+        // --- Borrowable Interface Demo ---
+        System.out.println();
+        System.out.println("--- BORROWABLE INTERFACE DEMO ---");
+        
+        Borrowable book1 = new Book("B001", "Clean Code", "Robert Martin");
+        Borrowable book2 = new Book("B002", "Design Patterns", "GoF");
+
+        book1.borrowBy("R001", "2024-09-01");
+        System.out.println("Available: " + book2.isAvailable()); // true
+
+        // Dung static method cua interface
+        System.out.println(Borrowable.isValidBorrowDuration(10)); // true
+        System.out.println(Borrowable.isValidBorrowDuration(20)); // false
+
+        // Dung default method
+        System.out.println(book1.calculateFine(3)); // 15000.0
+
+        book1.returnBook("2024-09-15");
     }
 }

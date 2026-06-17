@@ -41,8 +41,8 @@ public class SeniorReader extends CardHolder {
     }
 
     @Override
-    protected void onBorrowSuccess(Book book) {
-        super.onBorrowSuccess(book);
+    protected void onBorrowSuccess(Borrowable borrowable) {
+        super.onBorrowSuccess(borrowable);
         System.out.println(" -> Da ghi nhan: Nguoi cao tuoi — khong thu phi phat");
     }
 

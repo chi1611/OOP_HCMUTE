@@ -68,25 +68,27 @@ public abstract class Reader {
 
     public abstract double calculateLateFee(int daysLate);
 
-    public final BorrowResult processBorrow(Book book) {
+    public final BorrowResult processBorrow(Borrowable borrowable) {
         if (!checkBorrowQuota()) {
             return new BorrowResult(false,
                     "Da dat gioi han muon: " + getMaxBorrowLimit() + " cuon");
         }
 
-        if (!checkSpecialCondition(book)) {
-            return new BorrowResult(false, getSpecialConditionMessage());
+        if (borrowable instanceof Book) {
+            Book book = (Book) borrowable;
+            if (!checkSpecialCondition(book)) {
+                return new BorrowResult(false, getSpecialConditionMessage());
+            }
         }
 
-        if (!book.isAvailable()) {
-            return new BorrowResult(false, "Sach hien tai het hang: " + book.getTitle());
+        if (!borrowable.isAvailable()) {
+            return new BorrowResult(false, "Sach hien tai het hang: " + borrowable.getTitle());
         }
 
-        book.decreaseQuantity();
         currentBorrowCount++;
-        onBorrowSuccess(book);
+        onBorrowSuccess(borrowable);
 
-        return new BorrowResult(true, "Muon thanh cong: " + book.getTitle());
+        return new BorrowResult(true, "Muon thanh cong: " + borrowable.getTitle());
     }
 
     private boolean checkBorrowQuota() {
@@ -97,8 +99,8 @@ public abstract class Reader {
 
     protected abstract String getSpecialConditionMessage();
 
-    protected void onBorrowSuccess(Book book) {
-        System.out.println(getFullName() + " muon: " + book.getTitle());
+    protected void onBorrowSuccess(Borrowable borrowable) {
+        System.out.println(getFullName() + " muon: " + borrowable.getTitle());
     }
 
     public String getInfo() {

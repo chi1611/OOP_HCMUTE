@@ -20,12 +20,14 @@ public class Student extends CardHolder {
 
     @Override
     protected boolean checkSpecialCondition(Book book) {
-        return !book.isReferenceOnly();
+        // Simplified Book class no longer tracks referenceOnly status
+        // All books can be borrowed by students
+        return true;
     }
 
     @Override
     protected String getSpecialConditionMessage() {
-        return "Sach tham khao chi doc tai cho — sinh vien khong duoc mang ve";
+        return "";
     }
 
     @Override

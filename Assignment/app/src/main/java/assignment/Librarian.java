@@ -33,19 +33,25 @@ public class Librarian {
         return fullName;
     }
 
-    public void processLoan(Reader reader, Book book) {
+    public void processLoan(Reader reader, Borrowable borrowable) {
         System.out.println("[Thu thu " + fullName + "] Xu ly cho muon:");
-        BorrowResult result = reader.processBorrow(book);
-        System.out.println("  Ket qua: " + result.getMessage());
-        if (result.isSuccess()) {
-            BorrowSlip slip = new BorrowSlip(
-                    "SL" + System.currentTimeMillis(),
-                    reader,
-                    book,
-                    getCurrentDate(),
-                    getCurrentDate().plusDays(7)
-            );
-            library.addBorrowSlip(slip);
+        
+        // Handle Book-specific logic if needed
+        if (borrowable instanceof Book) {
+            Book book = (Book) borrowable;
+            BorrowResult result = reader.processBorrow(book);
+            System.out.println("  Ket qua: " + result.getMessage());
+            if (result.isSuccess()) {
+                borrowable.borrowBy(reader.getReaderId(), getCurrentDate().toString());
+                BorrowSlip slip = new BorrowSlip(
+                        "SL" + System.currentTimeMillis(),
+                        reader,
+                        borrowable,
+                        getCurrentDate(),
+                        getCurrentDate().plusDays(7)
+                );
+                library.addBorrowSlip(slip);
+            }
         }
     }
 
@@ -55,7 +61,7 @@ public class Librarian {
             double fee = slip.getReader().calculateLateFee((int) daysLate);
             System.out.printf("Phat qua han %d ngay: %.0f VND%n", daysLate, fee);
         }
-        slip.getBook().increaseQuantity();
+        slip.returnBorrow(getCurrentDate());
         library.removeBorrowSlip(slip);
     }
 

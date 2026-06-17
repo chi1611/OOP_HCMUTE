@@ -110,7 +110,7 @@ public class Library {
                 System.out.println(
                     slip.getReader().getFullName()
                     + " - "
-                    + slip.getBook().getTitle()
+                    + slip.getBorrowable().getTitle()
                 );
             }
         }
@@ -123,7 +123,7 @@ public class Library {
         for(Book book : books) {
             int count = 0;
             for(BorrowSlip slip : slips) {
-                if(slip.getBook().equals(book)) {
+                if(slip.getBorrowable() instanceof Book && slip.getBorrowable() == book) {
                     count++;
                 }
             }

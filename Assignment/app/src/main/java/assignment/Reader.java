@@ -1,12 +1,14 @@
 package assignment;
-
-public abstract class Reader {
+import java.util.List;
+import java.util.ArrayList; 
+import java.util.Collections;
+public abstract class Reader implements Notifiable {
     private String readerId;
     private String fullName;
     private String email;
     private ReaderType type;
     protected int currentBorrowCount;
-
+    private List<String> notifications = new ArrayList<>();
     public Reader(String readerId,
                   String fullName,
                   String email,
@@ -111,5 +113,16 @@ public abstract class Reader {
     @Override
     public String toString() {
         return getInfo();
+    }
+    // Notifiable interface methods
+    @Override
+    public void sendNotification(String message) {
+        notifications.add(message);
+        System.out.println("Gui den " + fullName + ": " + message);
+    }
+
+    @Override
+    public List<String> getNotificationHistory() {
+        return notifications;
     }
 }

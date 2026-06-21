@@ -1,7 +1,9 @@
 package assignment;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /*
  * DESIGN RATIONALE
@@ -193,5 +195,46 @@ public class App {
 
         System.out.println(
                 "Late: " + slip.isLate("2025-06-10"));
+
+        // Bài 3: 
+        // Phần a:Interface Fineable
+        System.out.println();
+        Fine fine = new Fine(5000, "Tra sach tre");
+
+        System.out.println("Tong phat 3 ngay: "
+                + fine.calculateTotalFine(3));
+
+        System.out.println("Hop le: "
+                + Fineable.isValidFine(5000));
+
+        //Phần b: Interface Notifiable
+        System.out.println();
+        Student student = new Student("R001", "Nguyen Van A", "a@student.edu");
+        student.sendNotification("Muon sach thanh cong!");
+        student.sendOverdueNotification();
+        System.out.println(student.getNotificationHistory());
+        
+        // Phần c: LibraryManager
+        System.out.println();
+        LibraryManager manager = new LibraryManager();
+        List<Borrowable> items = new ArrayList<>();
+        items.add(new Book(
+                "B01",
+                "Java Core",
+                "James"));
+        items.add(new Book(
+                "B02",
+                "Python Basic",
+                "John"));
+        manager.processAllBorrowable(items);
+
+    List<Notifiable> users = new ArrayList<>();
+
+    users.add(student);
+    users.add(new Lecturer("R002", "Dr. Smith", "S@lecturer.edu"));
+
+    manager.notifyAll(
+            users,
+            "Thu vien se dong cua luc 17h");
     }
 }

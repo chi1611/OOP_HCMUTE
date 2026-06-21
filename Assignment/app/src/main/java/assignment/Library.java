@@ -23,23 +23,54 @@ import java.util.List;
 //   This avoids duplicating borrowing state across Reader and library transaction records and ensures
 //   the borrowing quota is consistent with actual borrow slips.
 
-public class Library {
+public class Library implements Searchable {
 
     private ArrayList<Book> books;
     private ArrayList<Reader> readers;
     private ArrayList<BorrowSlip> slips;
     private LateFeePolicy feePolicy;
 
+    public void addBook(Book b) {
+        books.add(b);
+    }
+
+    @Override
+    public List<Book> searchByTitle(String kw) {
+
+        kw = Searchable.normalizeKeyword(kw);
+
+        List<Book> result = new ArrayList<>();
+
+        for (Book b : books) {
+            if (b.getTitle().toLowerCase().contains(kw)) {
+                result.add(b);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Book> searchByAuthor(String kw) {
+
+        kw = Searchable.normalizeKeyword(kw);
+
+        List<Book> result = new ArrayList<>();
+
+        for (Book b : books) {
+            if (b.getAuthor().toLowerCase().contains(kw)) {
+                result.add(b);
+            }
+        }
+
+        return result;
+    }
+
     public Library() {
         books = new ArrayList<>();
         readers = new ArrayList<>();
         slips = new ArrayList<>();
         feePolicy = new StandardFeePolicy();
-    }
-
-    public void addBook(
-            Book book) {
-        books.add(book);
     }
 
     public void addReader(

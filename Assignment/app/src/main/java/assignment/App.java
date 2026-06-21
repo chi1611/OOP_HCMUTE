@@ -1,5 +1,6 @@
 package assignment;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 /*
@@ -156,5 +157,41 @@ public class App {
         System.out.println(book1.calculateFine(3)); // 15000.0
 
         book1.returnBook("2024-09-15");
+        
+        //Bài 2: Interface Returnable và Searchable
+        System.out.println();
+        lib.addBook(new Book("B01", "Java Core", "James"));
+        lib.addBook(new Book("B02", "Python Basic", "John"));
+        lib.addBook(new Book("B03", "Java OOP", "David"));
+
+        System.out.println("Search title Java:");
+        for (Book b : lib.searchByTitle("java")) {
+            System.out.println(b);
+        }
+
+        System.out.println();
+        System.out.println("Search author John:");
+        for (Book b : lib.searchByAuthor("john")) {
+            System.out.println(b);
+        }
+
+        Reader reader = new Student("R001", "Nguyen Van A", "a@student.edu");
+        Book book = new Book("B01", "Java Core", "James");
+
+        BorrowSlip slip = new BorrowSlip(
+            "S01",
+            reader,
+            book,
+            LocalDate.now(),
+            LocalDate.now().plusDays(7)
+        );
+
+        slip.confirmReturn("2025-06-15");
+
+        System.out.println("Returned: " + slip.isReturned());
+        System.out.println("Return date: " + slip.getReturnDate());
+
+        System.out.println(
+                "Late: " + slip.isLate("2025-06-10"));
     }
 }

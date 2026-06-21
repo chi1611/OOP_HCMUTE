@@ -1,5 +1,7 @@
 package assignment;
 
+import java.time.LocalDate;
+
 public class Book implements Borrowable {
 
     private String bookId;
@@ -14,7 +16,14 @@ public class Book implements Borrowable {
         this.author    = author;
         this.currentBorrowerId = null;
     }
-
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + bookId + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
     @Override
     public void borrowBy(String readerId, String date) {
         if (!isAvailable()) {
@@ -60,4 +69,16 @@ public class Book implements Borrowable {
     public String getAuthor() { 
         return author; 
     }
+    public interface Returnable {
+
+    void confirmReturn(String date);
+
+    String getReturnDate();
+
+    boolean isReturned();
+
+    default boolean isLate(String dueDate) {
+        return LocalDate.now().isAfter(LocalDate.parse(dueDate));
+    }
+}
 }

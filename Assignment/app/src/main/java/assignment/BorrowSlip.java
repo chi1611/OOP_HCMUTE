@@ -2,16 +2,29 @@ package assignment;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import assignment.Book.Returnable;
 
-public class BorrowSlip {
+public class BorrowSlip implements Returnable {
     private String slipId;
     private Reader reader;
     private Borrowable borrowable;
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private boolean returned;
+    private String returnDate;
 
-    public BorrowSlip(
+     @Override
+    public void confirmReturn(String date) {
+        this.returnDate = date;
+        this.returned = true;
+    }
+
+    @Override
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+        public BorrowSlip(
             String slipId,
             Reader reader,
             Borrowable borrowable,
@@ -28,21 +41,22 @@ public class BorrowSlip {
     }
     
     public double returnBorrow(LocalDate returnDate) {
-        returned = true;
-        borrowable.returnBook(returnDate.toString());
+    confirmReturn(returnDate.toString());
 
-        if(returnDate.isAfter(dueDate)) {
-            long lateDays = ChronoUnit.DAYS.between(dueDate, returnDate);
-            return lateDays * 5000;
-        }
+    borrowable.returnBook(returnDate.toString());
 
-        return 0;
+    if(returnDate.isAfter(dueDate)) {
+        long lateDays = ChronoUnit.DAYS.between(dueDate, returnDate);
+        return lateDays * 5000;
+    }
+    return 0;
     }
     
     public boolean isOverdue(LocalDate currentDate) {
         return !returned && currentDate.isAfter(dueDate);
     }
     
+    @Override
     public boolean isReturned() {
         return returned;
     }
@@ -62,4 +76,5 @@ public class BorrowSlip {
     public LocalDate getDueDate() {
         return dueDate;
     }
+
 }
